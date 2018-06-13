@@ -237,6 +237,71 @@ def generate_torus( cx, cy, cz, r0, r1, step ):
             points.append([x, y, z])
     return points
 
+def add_pyramid(polygons, x, y, z, height, width):
+    x1 = x + width
+    y1 = y + height
+    z1 = z - width
+    add_polygon(polygons, x, y, z, x, y, z1, x1, y, z1)
+    add_polygon(polygons, x, y, z, x1, y, z, x1, y, z1)
+    add_polygon(polygons, x, y, z, x, y, z1, x + width/2, y1, z-width/2)
+    add_polygon(polygons, x1, y, z1, x1, y, z, x+width/2, y1, z-width/2)
+    add_polygon(polygons, x, y, z1, x1, y, z1, x+width/2, y1, z-width/2)
+    add_polygon(polygons, x1, y, z, x, y, z, x+width/2, y1, z-width/2)
+
+def add_cone(edges, x, y, z, radius, height): 
+    bottom_circle = []
+    top_circle = []
+    circle_step = 300
+    
+    add_circle(bottom_circle, x, y, z, 0, circle_step)
+    add_circle(top_circle, x, y, z+height, radius, circle_step)
+
+    for i in range(0, len(top_circle) - 1): 
+        i += 1
+        add_polygon(edges,top_circle[0][0],
+                    top_circle[0][1],
+                    top_circle[0][2],  
+                    top_circle[i][0],
+                    top_circle[i][1],
+                    top_circle[i][2],
+                    top_circle[len(top_circle)/2 - 1][0],
+                    top_circle[len(top_circle)/2 - 1][1],
+                    top_circle[len(top_circle)/2 - 1][2])
+        add_polygon(edges,
+                    top_circle[0][0],
+                    top_circle[0][1],
+                    top_circle[0][2],  
+                    top_circle[len(top_circle)/2 - 1][0],
+                    top_circle[len(top_circle)/2 - 1][1],
+                    top_circle[len(top_circle)/2 - 1][2], 
+                    top_circle[i][0],
+                    top_circle[i][1],
+                    top_circle[i][2]) 
+
+    rot = 1
+    for i in range(0, len(bottom_circle) - rot, rot): 
+        add_polygon(edges,
+                    top_circle[i][0],
+                    top_circle[i][1],
+                    top_circle[i][2],
+                    bottom_circle[i][0],
+                    bottom_circle[i][1],
+                    bottom_circle[i][2],
+                    top_circle[i + rot][0],
+                    top_circle[i + rot][1],
+                    top_circle[i + rot][2])
+
+    for i in range(0, len(bottom_circle) - rot, rot):
+        add_polygon(edges,
+                    bottom_circle[i + rot][0],
+                    bottom_circle[i + rot][1],
+                    bottom_circle[i + rot][2],
+                    top_circle[i + rot][0],
+                    top_circle[i + rot][1],
+                    top_circle[i + rot][2],bottom_circle[i][0],
+                    bottom_circle[i][1],
+                    bottom_circle[i][2])              
+
 def add_circle( points, cx, cy, cz, r, step ):
     x0 = r + cx
     y0 = cy
