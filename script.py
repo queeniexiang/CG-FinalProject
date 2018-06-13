@@ -79,7 +79,12 @@ def second_pass( commands ):
     global knobs
     global num_frames
 
-    knobs = [{} for x in range(int(num_frames))]
+    if num_frames != None:
+        knobs = [{} for x in range(int(num_frames))]
+
+    else:
+        num_frames = 1
+        knobs = [{}]
 
     for command in commands:
         op = command['op']
@@ -153,6 +158,7 @@ def run(filename):
 
     first_pass(commands)
     second_pass(commands)
+
     
     for frame in range(int(num_frames)):
         print "Frame: " +  str(frame)
@@ -253,7 +259,7 @@ def run(filename):
                 display(screen)
                 
             elif c == 'save':
-                save_extension(screen, args[0])
+                save_ppm(screen, args[0])
                 
         if is_anim:
             save_extension(screen, ("./anim/" + basename + ("%03d" % int(frame)) + ".png"))
