@@ -1,8 +1,8 @@
 # CG-FinalProject
 
-##New MDL Commands 
-*Cone
+## New MDL Commands 
+* Cone
 `cone x y z radius height`
 
-*Pyramid 
+* Pyramid 
 `pyramid x y z height width`
