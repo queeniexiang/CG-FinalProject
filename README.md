@@ -10,3 +10,7 @@
 
 * constants name kar kdr ksr kag kdg ksg kab kdb ksb -- saves a set of lighting components in the symbol table under name. It goes in the order of ambient red, diffuse red, specular red, ambient green, diffuse green, specular green, ambient blue, diffuse blue, specular blue
 
+* cone x y z radius height -- creates a cone at x y z location with specified radius and height
+
+* pyramid x y z height width -- creates a pyramid at x y z location with specified height and width
+
