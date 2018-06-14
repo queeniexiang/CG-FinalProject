@@ -68,7 +68,7 @@ def first_pass( commands ):
   ===================="""
 def second_pass( commands, num_frames ):
     
-    if num_frames > 1: 
+    if num_frames != 0:  
         knobs = [ {} for x in range(num_frames) ]
 
     else:
@@ -174,13 +174,10 @@ def run(filename):
         coords1 = []
         
         print "Frame: " +  str(frame)
-        
-        if num_frames > 1:
-            for knob in knobs[frame]:
-                print "knob: %s\tvalue: %f" % (knob, knobs[frame][knob])
-                symbols[knob][1] = knobs[frame][knob]
+    
+        for knob in knobs[frame]:
+            symbols[knob][1] = knobs[frame][knob]
              
-
         for command in commands:
             c = command['op']
             args = command['args']
@@ -216,7 +213,7 @@ def run(filename):
                 add_pyramid(tmp,
                             args[0], args[1], args[2], args[3], args[4])
                 matrix_mult(stack[-1], tmp)
-                draw_polygons(tmp, screen, zbuffer, view, ambient, light, areflect, dreflect, sreflect)
+                draw_polygons(tmp, screen, zbuffer, view, ambient, lights, symbols[command['constants']][1])
                 tmp = []
 
             elif c == 'sphere':
@@ -298,7 +295,7 @@ def run(filename):
                 display(screen)
                 
             elif c == 'save':
-                save_ppm(screen, args[0])   
+                save_ppm(screen, args[0])
                 
         if is_anim:
             save_extension(screen, ("./anim/" + basename + ("%03d" % int(frame)) + ".png"))
